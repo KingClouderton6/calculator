@@ -1,4 +1,5 @@
 const calculator = document.querySelector(".calculator-container");
+const display = document.querySelector(".num-display");
 
 const add = (a, b) => a + b;
 
