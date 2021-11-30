@@ -38,8 +38,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    min-width: 0;
-    min-height: 0;
+    font-size: 2rem;
     border: solid 1px black;
     text-align: center;
     border-radius: 5%;
