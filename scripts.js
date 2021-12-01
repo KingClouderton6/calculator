@@ -23,3 +23,21 @@ const operate = function(operator, a, b){
         return divide(a, b);
     }
 };
+
+
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        console.log(button.id);
+
+        if (button.classList.contains("num-button")){
+            display.textContent  += (button.id);
+        }
+    });
+});
+
+
+
+
+
