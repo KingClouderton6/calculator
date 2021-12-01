@@ -1,8 +1,9 @@
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
-let a = null;
-let b = null;
+let a = 0;
+let b = 0;
 let result = 0;
+let checkCrash = isFinite(result);
 let operator = null;
 
 // Can get rid of all these by looping through buttons and using (button.id)
@@ -30,23 +31,28 @@ const divide = (a, b) => {
 
 const operate = function(operator, a, b){
     b = Number(display.textContent);
+    checkCrash = isFinite(result);
 
-    if (operator === "+"){
+    if (checkCrash === false){
+        display.textContent = "Really?";
+        return;
+
+    } else if(operator === "+"){
         result = a + b;
         display.textContent = result;
         return result;
-    }
-    if (operator === "-"){
+
+    } else if (operator === "-"){
         result = a - b;
         display.textContent = result;
         return result;
-    }
-    if (operator === "*"){
+
+    } else if (operator === "*"){
         result = a * b;
         display.textContent = result;
         return result;
-    }
-    if (operator === "/"){
+        
+    } else if (operator === "/"){
         result = a / b;
         display.textContent = result;
         return result;
@@ -96,9 +102,10 @@ allClearBtn.addEventListener('click', () => {
 function allClear(){
     a = 0;
     b = 0;
-    temp = 0;
+    result = 0;
+    display.textContent = '';
+    checkCrash = result;
     operator = null;
-    
 }
 
 function storeVariable(){
@@ -118,5 +125,3 @@ const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
     operate(operator, a, b);
 });
-
-
