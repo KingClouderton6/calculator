@@ -2,28 +2,54 @@ const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = null;
 let b = null;
-let temp = 0;
+let result = 0;
+let operator = null;
 
-const add = (a, b) => a + b;
+// Can get rid of all these by looping through buttons and using (button.id)
+// 
 
-const subtract = (a, b) => a - b;
+const add = (a, b) => {
+    storeVariable();
+    operator = '+';
+}
 
-const multiply = (a, b) => a * b;
+const subtract = (a, b) => {
+    storeVariable();
+    operator = '-';
+}
 
-const divide = (a, b) => a / b;
+const multiply = (a, b) => {
+    storeVariable();
+    operator = '*';
+}
+
+const divide = (a, b) => {
+    storeVariable();
+    operator = '/';
+}
 
 const operate = function(operator, a, b){
+    b = Number(display.textContent);
+
     if (operator === "+"){
-        return add(a, b);
+        result = a + b;
+        display.textContent = result;
+        return result;
     }
     if (operator === "-"){
-        return subtract(a, b);
+        result = a - b;
+        display.textContent = result;
+        return result;
     }
     if (operator === "*"){
-        return multiply(a, b);
+        result = a * b;
+        display.textContent = result;
+        return result;
     }
     if (operator === "/"){
-        return divide(a, b);
+        result = a / b;
+        display.textContent = result;
+        return result;
     }
 };
 
@@ -40,6 +66,27 @@ buttons.forEach((button) => {
     });
 });
 
+const addBtn = document.getElementById('+');
+addBtn.addEventListener('click', () => {
+    add();
+})
+
+const subtractBtn = document.getElementById('-');
+subtractBtn.addEventListener('click', () => {
+    subtract();
+})
+
+const multiplyBtn = document.getElementById('*');
+multiplyBtn.addEventListener('click', () => {
+    multiply();
+})
+
+const divideBtn = document.getElementById('/');
+divideBtn.addEventListener('click', () => {
+    divide();
+})
+
+// Functions for AllClear and to Store first variable typed in by user
 const allClearBtn = document.getElementById('clear')
 
 allClearBtn.addEventListener('click', () => {
@@ -50,19 +97,26 @@ function allClear(){
     a = 0;
     b = 0;
     temp = 0;
-    display.textContent = '';
+    operator = null;
+    
+}
+
+function storeVariable(){
+    a = Number(display.textContent);
+    clearScreen();
+    return a;
 }
 
 function clearScreen(){
     display.textContent = '';
 }
 
-function storeVariable(){
-    a = display.textContent;
-    return a;
-}
+// Equals button functionalities
 
+const operateBtn = document.getElementById('=');
 
-
+operateBtn.addEventListener('click', () => {
+    operate(operator, a, b);
+});
 
 
