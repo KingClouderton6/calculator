@@ -1,3 +1,5 @@
+// Fix concetanating of new numbers to the display after a result has been calculated if the user doesn't clear
+
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = 0;
@@ -7,7 +9,6 @@ let checkCrash = isFinite(result);
 let operator = null;
 
 // Can get rid of all these by looping through buttons and using (button.id)
-// 
 
 const add = (a, b) => {
     storeVariable();
@@ -31,13 +32,8 @@ const divide = (a, b) => {
 
 const operate = function(operator, a, b){
     b = Number(display.textContent);
-    checkCrash = isFinite(result);
 
-    if (checkCrash === false){
-        display.textContent = "Really?";
-        return;
-
-    } else if(operator === "+"){
+     if(operator === "+"){
         result = a + b;
         display.textContent = result;
         return result;
@@ -51,9 +47,13 @@ const operate = function(operator, a, b){
         result = a * b;
         display.textContent = result;
         return result;
-        
+
     } else if (operator === "/"){
         result = a / b;
+        stopCrash();
+        if (checkCrash === false){
+            display.textContent = 'Really?';
+        } else 
         display.textContent = result;
         return result;
     }
@@ -71,6 +71,8 @@ buttons.forEach((button) => {
         }
     });
 });
+
+// Can probably get rid of these if you follow up on line eleven
 
 const addBtn = document.getElementById('+');
 addBtn.addEventListener('click', () => {
@@ -125,3 +127,7 @@ const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
     operate(operator, a, b);
 });
+
+function stopCrash(){
+    checkCrash = isFinite(result);
+}
