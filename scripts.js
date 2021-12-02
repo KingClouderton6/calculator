@@ -1,5 +1,5 @@
-// Fix concetanating of new numbers to the display after a result has been calculated if the user doesn't clear
-
+// TODO: Fix concetanating of new numbers to the display after a result has been calculated if the user doesn't clear
+// TODO: Finish functionality for DEL button
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = 0;
@@ -64,16 +64,17 @@ const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
+
 // Maybe do if / else for when their is a 0 still present in the calculator
+// Adds numbers to calculator display 
         
         if (button.classList.contains("num-button")){
-            display.textContent  += (button.id);
+            display.textContent  += button.id;
         }
     });
 });
 
 // Can probably get rid of these if you follow up on line eleven
-
 const addBtn = document.getElementById('+');
 addBtn.addEventListener('click', () => {
     add();
@@ -111,7 +112,7 @@ function allClear(){
 }
 
 function storeVariable(){
-    a = Number(display.textContent);
+    a = display.textContent;
     clearScreen();
     return a;
 }
@@ -119,15 +120,37 @@ function storeVariable(){
 function clearScreen(){
     display.textContent = '';
 }
-
 // Equals button functionalities
-
 const operateBtn = document.getElementById('=');
 
 operateBtn.addEventListener('click', () => {
     operate(operator, a, b);
 });
 
+// + / - button functionality
+const negOrPosBtn = document.getElementById('negative-positive');
+
+negOrPosBtn.addEventListener('click', () => {
+    makeNegativeOrPositive();
+});
+
+function makeNegativeOrPositive (){
+    if (Number(display.textContent) > 0){
+        let negConversion = display.textContent;
+        let negativeSym = '-';
+        let negativeNum = negativeSym.concat(negConversion);
+        return display.textContent = negativeNum;
+    } 
+
+    if(Number(display.textContent) < 0){
+        let posConversion = display.textContent;
+        let posNumber = posConversion.replace('-','');
+        display.textContent = posNumber;
+        
+    }
+}
+
+// Checks for infinity to stop calculator crashing
 function stopCrash(){
     checkCrash = isFinite(result);
 }

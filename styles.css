@@ -69,6 +69,15 @@ body {
     border: solid 1px black;
 }
 
+.red-button {
+    background-color: rgb(165, 22, 22);
+}
+
+.red-button:hover {
+    background-color: rgb(255, 122, 122);
+}
+
+
 .blue-button {
     background-color: blueviolet;
 }
@@ -88,6 +97,8 @@ body {
 .num-display {
     font-family: monospace;
     color: black;
+    overflow-y: hidden;
+    overflow-x: scroll;
 }
 
 footer  {
