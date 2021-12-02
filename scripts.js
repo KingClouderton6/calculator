@@ -8,7 +8,7 @@ let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
 
-// Opt. TODO get rid of  these by looping through buttons and using button.id
+//Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
     storeVariable();
     operator = '+';
@@ -29,7 +29,7 @@ const divide = () => {
     operator = '/';
 }
 
-// Functions that execute calculations (insert vomit here)
+// Executes calculations (insert vomit emoji here)
 const operate = function(){
     storeVariableB();
     calculate(operator, a, b);  
@@ -102,9 +102,8 @@ divideBtn.addEventListener('click', () => {
     divide();
 })
 
-// Functions for AllClear and to Store first variable typed in by user
+// Effectively refreshes the calculator
 const allClearBtn = document.getElementById('clear')
-
 allClearBtn.addEventListener('click', () => {
     allClear();
 });
@@ -118,8 +117,16 @@ function allClear(){
     operator = null;
 }
 
+function clearScreen(){
+    if ( a !== null){
+        display.textContent = '';
+    }
+}
+
+
+// Stores numbers for calculations
 function storeVariable(){
-    a = display.textContent;
+    a = Number(display.textContent);
     clearScreen();
     return a;
 }
@@ -132,11 +139,6 @@ function storeVariableB(){
     }
 }
 
-function clearScreen(){
-    if ( a !== null){
-        display.textContent = '';
-    }
-}
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
@@ -178,7 +180,7 @@ function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
 
-// Deletes numbers 
+// Turns display nums into array and pops out last array object; 
 const delBtn = document.getElementById('delete');
 function delNum(){
    let str = display.textContent;
@@ -188,6 +190,7 @@ function delNum(){
    display.textContent = delStr;
 }
 
+// Runs allClear if user types in new numbers after finishing a calc;
 function stopConcat(){
     if (result == Number(display.textContent)){
         allClear();
@@ -195,6 +198,6 @@ function stopConcat(){
 }
 
 function roundDown(){
-    result = Math.round(result * 100)/ 100;
+    result = Math.round(result * 1000)/ 1000;
     return result;
 }
