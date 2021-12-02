@@ -1,5 +1,5 @@
 // TODO: Fix concetanating of new numbers to the display after a result has been calculated if the user doesn't clear
-// TODO: Finish functionality for DEL button
+// TODO: Finish functionality for DEL button (turn into array push out last numb, display)
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = 0;
@@ -9,7 +9,6 @@ let checkCrash = isFinite(result);
 let operator = null;
 
 // Can get rid of all these by looping through buttons and using (button.id)
-
 const add = (a, b) => {
     storeVariable();
     operator = '+';
@@ -30,10 +29,15 @@ const divide = (a, b) => {
     operator = '/';
 }
 
-const operate = function(operator, a, b){
-    b = Number(display.textContent);
+// Functions that do the calculations (insert vomit here)
+// TODO make a equal B 
+const operate = function(){
+    storeVariableB();
+    calculate(operator, a, b);  
+};
 
-     if(operator === "+"){
+function calculate(operator, a, b){
+    if(operator === "+"){
         result = a + b;
         display.textContent = result;
         return result;
@@ -57,7 +61,7 @@ const operate = function(operator, a, b){
         display.textContent = result;
         return result;
     }
-};
+}
 
 const buttons = document.querySelectorAll('button');
 
@@ -67,10 +71,15 @@ buttons.forEach((button) => {
 
 // Maybe do if / else for when their is a 0 still present in the calculator
 // Adds numbers to calculator display 
-        
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
         }
+
+        if((display.textContent).includes('.')){
+            removeDotFunctionality();
+        }   else {
+            addFunctionality();
+        }   
     });
 });
 
@@ -110,11 +119,15 @@ function allClear(){
     checkCrash = result;
     operator = null;
 }
-
+// Can probably get rid of these if you follow up on line eleven
 function storeVariable(){
     a = display.textContent;
     clearScreen();
     return a;
+}
+
+function storeVariableB(){
+    b = Number(display.textContent);
 }
 
 function clearScreen(){
@@ -154,3 +167,12 @@ function makeNegativeOrPositive (){
 function stopCrash(){
     checkCrash = isFinite(result);
 }
+
+function removeDotFunctionality(){
+    document.getElementById('.').disabled = true;
+}
+
+function addFunctionality(){
+    document.getElementById('.').disabled = false;
+}
+
