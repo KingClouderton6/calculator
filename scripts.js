@@ -1,6 +1,5 @@
-// TODO: Fix concetanating of new numbers to the display after a result has been calculated if the user doesn't clear
-// TODO: Finish functionality for DEL button (turn into array push out last numb, display)
-// TODO: Fix calculation error e.g 85 x 2 = 170 but pressing = again doesn't do 170 x 2
+// TODO: Allow for users to do multiple operations 5 * 5 * 3 * 4 and get a result after each operation
+// TODO: Always have a number in the screen when calculations are on going;
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = null;
@@ -9,28 +8,28 @@ let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
 
-// Can get rid of all these by looping through buttons and using (button.id)
-const add = (a, b) => {
+// Opt. TODO get rid of  these by looping through buttons and using button.id
+const add = () => {
     storeVariable();
     operator = '+';
 }
 
-const subtract = (a, b) => {
+const subtract = () => {
     storeVariable();
     operator = '-';
 }
 
-const multiply = (a, b) => {
+const multiply = () => {
     storeVariable();
     operator = '*';
 }
 
-const divide = (a, b) => {
+const divide = () => {
     storeVariable();
     operator = '/';
 }
 
-// Functions that do the calculations (insert vomit here)
+// Functions that execute calculations (insert vomit here)
 const operate = function(){
     storeVariableB();
     calculate(operator, a, b);  
@@ -55,28 +54,25 @@ function calculate(operator, a, b){
     } else if (operator === "/"){
         result = a / b;
         stopCrash();
+        roundDown();
         if (checkCrash === false){
             display.textContent = 'Really?';
         } else 
         display.textContent = result;
         return result;
     }
-
-    startCalc();
-
 }
-
-const buttons = document.querySelectorAll('button');
-
+// Adds numbers to calculator display 
+const buttons = document.querySelectorAll('.num-button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
+        stopConcat();
 
-// Adds numbers to calculator display 
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
         }
-
+        // Stops users typing in multiple decimal points
         if((display.textContent).includes('.')){
             removeDotFunctionality();
         }   else {
@@ -116,7 +112,7 @@ allClearBtn.addEventListener('click', () => {
 function allClear(){
     a = null;
     b = null;
-    result = 0;
+    result = null;
     display.textContent = '';
     checkCrash = result;
     operator = null;
@@ -129,7 +125,11 @@ function storeVariable(){
 }
 
 function storeVariableB(){
-    b = Number(display.textContent);
+    if (result === null) {
+        b = Number(display.textContent);
+    } else {
+        a = result;
+    }
 }
 
 function clearScreen(){
@@ -162,7 +162,6 @@ function makeNegativeOrPositive (){
         let posConversion = display.textContent;
         let posNumber = posConversion.replace('-','');
         display.textContent = posNumber;
-        
     }
 }
 
@@ -179,16 +178,23 @@ function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
 
-function startCalc(){
-    a = result;
-}
-
+// Deletes numbers 
 const delBtn = document.getElementById('delete');
-
 function delNum(){
    let str = display.textContent;
    let numAsArray = str.split('')
    numAsArray.pop();
    let delStr = numAsArray.join('');
    display.textContent = delStr;
+}
+
+function stopConcat(){
+    if (result == Number(display.textContent)){
+        allClear();
+    }
+}
+
+function roundDown(){
+    result = Math.round(result * 100)/ 100;
+    return result;
 }
