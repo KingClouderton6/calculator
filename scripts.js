@@ -42,16 +42,19 @@ function calculate(operator, a, b){
 
     if(operator === "+"){
         result = a + b;
+        roundDown();
         display.textContent = result;
         return result;
 
     } else if (operator === "-"){
         result = a - b;
+        roundDown();
         display.textContent = result;
         return result;
 
     } else if (operator === "*"){
         result = a * b;
+        roundDown();
         display.textContent = result;
         return result;
 
