@@ -7,6 +7,7 @@ let b = null;
 let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
+let operatorCount = 0;
 
 //Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
@@ -36,6 +37,9 @@ const operate = function(){
 };
 
 function calculate(operator, a, b){
+
+    console.log("Zzttt...zzttt...zzttt...machine...running...");
+
     if(operator === "+"){
         result = a + b;
         display.textContent = result;
@@ -55,19 +59,22 @@ function calculate(operator, a, b){
         result = a / b;
         stopCrash();
         roundDown();
+        }
+        
         if (checkCrash === false){
             display.textContent = 'Really?';
-        } else 
+        } else {
         display.textContent = result;
         return result;
     }
 }
+
 // Adds numbers to calculator display 
-const buttons = document.querySelectorAll('.num-button');
+const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
-        stopConcat();
+        // stopConcat();
 
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
@@ -112,33 +119,39 @@ function allClear(){
     a = null;
     b = null;
     result = null;
+    operatorCount = 0;
     display.textContent = '';
     checkCrash = result;
     operator = null;
+    console.log("All Clear");
 }
 
 function clearScreen(){
+    console.log("clearScreen");
     if ( a !== null){
         display.textContent = '';
     }
 }
 
-
 // Stores numbers for calculations
 function storeVariable(){
+
+    if (b === null && a !== null){
+        storeVariableB();
+    }
+
     a = Number(display.textContent);
+    console.log(a);
     clearScreen();
     return a;
 }
 
 function storeVariableB(){
-    if (result === null) {
+    if (result === null || result === a) {
         b = Number(display.textContent);
-    } else {
-        a = result;
+        console.log(`storeVariableB`);
     }
 }
-
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
@@ -190,14 +203,16 @@ function delNum(){
    display.textContent = delStr;
 }
 
-// Runs allClear if user types in new numbers after finishing a calc;
-function stopConcat(){
-    if (result == Number(display.textContent)){
-        allClear();
-    }
+function roundDown(){
+    console.log("roundDown");
+    result = Math.round(result * 1000)/ 1000;
+     return result; 
 }
 
-function roundDown(){
-    result = Math.round(result * 1000)/ 1000;
-    return result;
+function flowOperate(){
+    ++operatorCount;
+    console.log(operatorCount);
+    if (operatorCount == 2){
+        calculate();
+    }
 }
