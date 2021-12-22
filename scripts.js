@@ -1,5 +1,4 @@
 // TODO: Allow for users to do multiple operations 5 * 5 * 3 * 4 and get a result after each operation
-// TODO: Always have a number in the screen when calculations are on going;
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = null;
@@ -77,8 +76,17 @@ const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
-        // stopConcat();
 
+        if(((display.textContent !== null && a !== null) && b === null) || result !== null){
+            clearScreen();
+        } 
+
+        if (button.classList.contains("operator-button")){
+            return;
+        } else if (display.textContent == result){
+            allClear();
+        }
+            
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
         }
@@ -112,7 +120,7 @@ divideBtn.addEventListener('click', () => {
     divide();
 })
 
-// Effectively refreshes the calculator
+// Refreshes calculator and clears calc screen
 const allClearBtn = document.getElementById('clear')
 allClearBtn.addEventListener('click', () => {
     allClear();
@@ -129,9 +137,15 @@ function allClear(){
     console.log("All Clear");
 }
 
+
+// Clears calc display but keep data
 function clearScreen(){
     console.log("clearScreen");
-    if ( a !== null){
+    // if ( a !== null ){
+    //     display.textContent = '';
+    // }
+
+    if (display.textContent == a){
         display.textContent = '';
     }
 }
@@ -145,7 +159,7 @@ function storeVariable(){
 
     a = Number(display.textContent);
     console.log(a);
-    clearScreen();
+    // clearScreen();
     return a;
 }
 
@@ -191,7 +205,7 @@ function stopCrash(){
 function removeDotFunctionality(){
     document.getElementById('.').disabled = true;
 }
-// Can probably get rid of these if you follow up on line eleve
+
 function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
@@ -207,7 +221,6 @@ function delNum(){
 }
 
 function roundDown(){
-    console.log("roundDown");
     result = Math.round(result * 1000)/ 1000;
      return result; 
 }

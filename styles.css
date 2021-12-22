@@ -67,6 +67,10 @@ body {
     text-align: center;
     background-color: #ebc3e1 ;
     border: solid 1px black;
+    font-family: monospace;
+    color: black;
+    /* overflow-y: hidden;
+    overflow-x: scroll; */
 }
 
 .red-button {
@@ -92,13 +96,6 @@ body {
 
 .orange-button:hover {
     background-color: rgb(255, 68, 0);
-}
-
-.num-display {
-    font-family: monospace;
-    color: black;
-    overflow-y: hidden;
-    overflow-x: scroll;
 }
 
 footer  {
