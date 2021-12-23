@@ -1,4 +1,5 @@
 // TODO: Allow for users to do multiple operations 5 * 5 * 3 * 4 and get a result after each operation
+// TODO: Stop concat of numbers:
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = null;
@@ -7,26 +8,32 @@ let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
 let operatorCount = 0;
+let operatorPrimary = null;
+let equalsCheck = null;
 
 //Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
-    storeVariable();
     operator = '+';
+    storeVariable();
+    storeOperator();
 }
 
 const subtract = () => {
-    storeVariable();
     operator = '-';
+    storeVariable();
+    storeOperator();
 }
 
 const multiply = () => {
-    storeVariable();
     operator = '*';
+    storeVariable(); 
+    storeOperator();
 }
 
 const divide = () => {
-    storeVariable();
     operator = '/';
+    storeVariable();
+    storeOperator();
 }
 
 // Executes calculations (insert vomit emoji here)
@@ -76,20 +83,22 @@ const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
-
+        
         if(((display.textContent !== null && a !== null) && b === null) || result !== null){
             clearScreen();
         } 
 
-        if (button.classList.contains("operator-button")){
+        if (button.classList.contains("operator-button") && display.textContent){
             return;
-        } else if (display.textContent == result){
+        } else if (display.textContent == result && (button.classList.contains("operator-button") == false)){
             allClear();
+            console.log("wiping");
         }
             
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
-        }
+        } 
+
         // Stops users typing in multiple decimal points
         if((display.textContent).includes('.')){
             removeDotFunctionality();
@@ -130,6 +139,7 @@ function allClear(){
     a = null;
     b = null;
     result = null;
+    equalsCheck = null;
     operatorCount = 0;
     display.textContent = '';
     checkCrash = result;
@@ -140,10 +150,7 @@ function allClear(){
 
 // Clears calc display but keep data
 function clearScreen(){
-    console.log("clearScreen");
-    // if ( a !== null ){
-    //     display.textContent = '';
-    // }
+    // console.log("clearScreen");
 
     if (display.textContent == a){
         display.textContent = '';
@@ -155,24 +162,24 @@ function storeVariable(){
 
     if (b === null && a !== null){
         storeVariableB();
-    }
-
+    } else {
     a = Number(display.textContent);
-    console.log(a);
-    // clearScreen();
+    console.log(`a is ${a} b is ${b}`);
     return a;
+    }
 }
 
 function storeVariableB(){
     if (result === null || result === a) {
         b = Number(display.textContent);
-        console.log(`storeVariableB`);
+        console.log(`a is ${a} b is ${b}`);
     }
 }
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
+    equalsCheck = '=';
     operate(operator, a, b);
 });
 
@@ -205,7 +212,7 @@ function stopCrash(){
 function removeDotFunctionality(){
     document.getElementById('.').disabled = true;
 }
-
+// Can probably get rid of these if you follow up on line eleve
 function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
@@ -224,11 +231,25 @@ function roundDown(){
     result = Math.round(result * 1000)/ 1000;
      return result; 
 }
+// Focus here; attempt to make operators flow, if operatorCount = 2; calculate (might have to have some storeVariables of its own here)
+function storeOperator(){
 
-function flowOperate(){
     ++operatorCount;
-    console.log(operatorCount);
-    if (operatorCount == 2){
-        calculate();
+
+
+
+    if (equalsCheck === '='){
+        operatorCount = 0;
+    } 
+
+    if(operatorCount >= 1){
+        operatorPrimary = operator;
+        operatorCount++;
     }
+    
+    // if((operatorCount >= 2 && operator !== '=') && (result === null || result == a)){
+    //     operator = operatorPrimary;
+    //     calculate(operator, a, b);
+    //     // operatorCount = 1;
+    // }
 }
