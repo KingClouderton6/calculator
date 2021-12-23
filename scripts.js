@@ -153,17 +153,16 @@ function clearScreen(){
 // Stores numbers for calculations : TODO: Only problem is the operator gets stuck
 function storeVariable(){
     ++operatorCount;
-
+    console.log(`Operator count is ${operatorCount}`);
     if (operatorCount === 1){
         secondaryOperator = operator;
-        console.log(`Operator count is ${operatorCount}`);
         console.log(`Secondary operator is ${secondaryOperator}`);
     } else if (operatorCount === 2){
         operatorCount = 1;
         console.log(`Operator count is ${operatorCount}`);
         // operator = storedOperator;
 
-        operator = secondaryOperator
+        operator = secondaryOperator;
         storeVariableB();
         calculate(operator, a, b);
     }
