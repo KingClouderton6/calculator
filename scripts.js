@@ -1,46 +1,38 @@
 // TODO: Allow for users to do multiple operations 5 * 5 * 3 * 4 and get a result after each operation
-// TODO: Stop concat of numbers:
+// Opt TODO: Make 
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
-let a = null;
-let b = null;
+let a = 0;
+let b = 0;
 let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
 let operatorCount = 0;
-let operatorPrimary = null;
-let equalsCheck = null;
+let secondaryOperator = null;
+let storedOperator = null;
 
 //Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
     operator = '+';
     storeVariable();
-    storeOperator();
 }
 
 const subtract = () => {
     operator = '-';
     storeVariable();
-    storeOperator();
 }
 
 const multiply = () => {
     operator = '*';
     storeVariable(); 
-    storeOperator();
 }
 
 const divide = () => {
     operator = '/';
     storeVariable();
-    storeOperator();
 }
 
 // Executes calculations (insert vomit emoji here)
-const operate = function(){
-    storeVariableB();
-    calculate(operator, a, b);  
-};
 
 function calculate(operator, a, b){
 
@@ -84,7 +76,7 @@ buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
         
-        if(((display.textContent !== null && a !== null) && b === null) || result !== null){
+        if(display.textContent !== null){
             clearScreen();
         } 
 
@@ -136,52 +128,70 @@ allClearBtn.addEventListener('click', () => {
 });
 
 function allClear(){
-    a = null;
-    b = null;
+    a = 0;
+    b = 0;
     result = null;
     equalsCheck = null;
+    secondaryOperator = null;
     operatorCount = 0;
     display.textContent = '';
     checkCrash = result;
     operator = null;
-    console.log("All Clear");
+    console.log("AC");
 }
 
 
 // Clears calc display but keep data
 function clearScreen(){
-    // console.log("clearScreen");
 
     if (display.textContent == a){
         display.textContent = '';
+        console.log('CS');
     }
 }
 
-// Stores numbers for calculations
+// Stores numbers for calculations : TODO: Only problem is the operator gets stuck
 function storeVariable(){
+    ++operatorCount;
 
-    if (b === null && a !== null){
+    if (operatorCount === 1){
+        secondaryOperator = operator;
+        console.log(`Operator count is ${operatorCount}`);
+        console.log(`Secondary operator is ${secondaryOperator}`);
+    } else if (operatorCount === 2){
+        operatorCount = 1;
+        console.log(`Operator count is ${operatorCount}`);
+        // operator = storedOperator;
+
+        operator = secondaryOperator
         storeVariableB();
-    } else {
+        calculate(operator, a, b);
+    }
+
     a = Number(display.textContent);
     console.log(`a is ${a} b is ${b}`);
     return a;
-    }
+    
 }
 
 function storeVariableB(){
-    if (result === null || result === a) {
+    
+    if (operatorCount === 1){
         b = Number(display.textContent);
-        console.log(`a is ${a} b is ${b}`);
+        return b;
     }
 }
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
-    equalsCheck = '=';
-    operate(operator, a, b);
+
+    storeVariableB();
+    calculate(operator, a, b);
+
+    operatorCount = 0;
 });
+
 
 // + / - button functionality
 const negOrPosBtn = document.getElementById('negative-positive');
@@ -230,26 +240,4 @@ function delNum(){
 function roundDown(){
     result = Math.round(result * 1000)/ 1000;
      return result; 
-}
-// Focus here; attempt to make operators flow, if operatorCount = 2; calculate (might have to have some storeVariables of its own here)
-function storeOperator(){
-
-    ++operatorCount;
-
-
-
-    if (equalsCheck === '='){
-        operatorCount = 0;
-    } 
-
-    if(operatorCount >= 1){
-        operatorPrimary = operator;
-        operatorCount++;
-    }
-    
-    // if((operatorCount >= 2 && operator !== '=') && (result === null || result == a)){
-    //     operator = operatorPrimary;
-    //     calculate(operator, a, b);
-    //     // operatorCount = 1;
-    // }
 }
