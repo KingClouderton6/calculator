@@ -143,7 +143,7 @@ function allClear(){
 
 // Clears calc display but keep data
 function clearScreen(){
-
+// or if (operatorCount === 1)
     if (display.textContent == a){
         display.textContent = '';
         console.log('CS');
@@ -151,15 +151,13 @@ function clearScreen(){
 }
 
 // Stores numbers for calculations : TODO: Only problem is the operator gets stuck
+// Maybe if operator count is 1 clear screen when typing to fix calculating a number
 function storeVariable(){
     ++operatorCount;
-    console.log(`Operator count is ${operatorCount}`);
     if (operatorCount === 1){
         secondaryOperator = operator;
-        console.log(`Secondary operator is ${secondaryOperator}`);
     } else if (operatorCount === 2){
         operatorCount = 1;
-        console.log(`Operator count is ${operatorCount}`);
         // operator = storedOperator;
 
         operator = secondaryOperator;
@@ -168,7 +166,6 @@ function storeVariable(){
     }
 
     a = Number(display.textContent);
-    console.log(`a is ${a} b is ${b}`);
     return a;
     
 }
