@@ -144,7 +144,7 @@ function allClear(){
 // Clears calc display but keep data
 function clearScreen(){
 // or if (operatorCount === 1)
-    if (display.textContent == a){
+    if (display.textContent == a && a !== b){
         display.textContent = '';
         console.log('CS');
     }
@@ -157,11 +157,15 @@ function storeVariable(){
     if (operatorCount === 1){
         secondaryOperator = operator;
     } else if (operatorCount === 2){
-        operatorCount = 1;
-        // operator = storedOperator;
-
+        storedOperator = operator;
         operator = secondaryOperator;
         storeVariableB();
+        calculate(operator, a, b);
+    } else if (operatorCount === 3){
+        operatorCount = 1;
+        storeVariableB();
+        secondaryOperator = operator;
+        operator = storedOperator;
         calculate(operator, a, b);
     }
 
@@ -172,10 +176,10 @@ function storeVariable(){
 
 function storeVariableB(){
     
-    if (operatorCount === 1){
+    // if (operatorCount === 1){
         b = Number(display.textContent);
         return b;
-    }
+    // }
 }
 
 // Equals button functionalities
