@@ -57,17 +57,17 @@ function calculate(operator, a, b){
         return result;
 
     } else if (operator === "/"){
+
+        if (b === 0){
+            display.textContent = 'Really?'
+        }
+
         result = a / b;
         stopCrash();
         roundDown();
-        }
-        
-        if (checkCrash === false){
-            display.textContent = 'Really?';
-        } else {
         display.textContent = result;
-        return result;
-    }
+        
+        }
 }
 
 // Adds numbers to calculator display 
@@ -84,7 +84,6 @@ buttons.forEach((button) => {
             return;
         } else if (display.textContent == result && (button.classList.contains("operator-button") == false)){
             allClear();
-            console.log("wiping");
         }
             
         if (button.classList.contains("num-button")){
@@ -143,17 +142,16 @@ function allClear(){
 
 // Clears calc display but keep data
 function clearScreen(){
-// or if (operatorCount === 1)
-    if (display.textContent == a && a !== b){
+    if (display.textContent == a && b !== null){
         display.textContent = '';
         console.log('CS');
     }
 }
 
-// Stores numbers for calculations : TODO: Only problem is the operator gets stuck
-// Maybe if operator count is 1 clear screen when typing to fix calculating a number
+// Stores numbers and operations for calculations
 function storeVariable(){
     ++operatorCount;
+
     if (operatorCount === 1){
         secondaryOperator = operator;
     } else if (operatorCount === 2){
@@ -176,15 +174,20 @@ function storeVariable(){
 
 function storeVariableB(){
     
-    // if (operatorCount === 1){
         b = Number(display.textContent);
         return b;
-    // }
+
 }
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
+    
+    if (operatorCount === 2){
+        operator = storedOperator;
+    } else if (operatorCount === 3){
+        operator = secondaryOperator;
+    }
 
     storeVariableB();
     calculate(operator, a, b);
