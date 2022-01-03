@@ -3,7 +3,7 @@
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
 let a = 0;
-let b = 0;
+let b = null;
 let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
@@ -66,7 +66,7 @@ function calculate(operator, a, b){
         stopCrash();
         roundDown();
         display.textContent = result;
-        
+
         }
 }
 
@@ -132,9 +132,9 @@ function allClear(){
     result = null;
     equalsCheck = null;
     secondaryOperator = null;
+    storedOperator = null;
     operatorCount = 0;
     display.textContent = '';
-    checkCrash = result;
     operator = null;
     console.log("AC");
 }
@@ -142,7 +142,7 @@ function allClear(){
 
 // Clears calc display but keep data
 function clearScreen(){
-    if (display.textContent == a && b !== null){
+    if (display.textContent == a){
         display.textContent = '';
         console.log('CS');
     }
@@ -195,7 +195,6 @@ operateBtn.addEventListener('click', () => {
     operatorCount = 0;
 });
 
-
 // + / - button functionality
 const negOrPosBtn = document.getElementById('negative-positive');
 negOrPosBtn.addEventListener('click', () => {
@@ -225,7 +224,7 @@ function stopCrash(){
 function removeDotFunctionality(){
     document.getElementById('.').disabled = true;
 }
-// Can probably get rid of these if you follow up on line eleve
+
 function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
