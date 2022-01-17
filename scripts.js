@@ -1,40 +1,38 @@
 // TODO: Allow for users to do multiple operations 5 * 5 * 3 * 4 and get a result after each operation
-// TODO: Always have a number in the screen when calculations are on going;
+// Opt TODO: Make 
 const calculator = document.querySelector(".calculator-container");
 const display = document.querySelector(".num-display");
-let a = null;
+let a = 0;
 let b = null;
 let result = null;
 let checkCrash = isFinite(result);
 let operator = null;
 let operatorCount = 0;
+let secondaryOperator = null;
+let storedOperator = null;
 
 //Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
-    storeVariable();
     operator = '+';
+    storeVariable();
 }
 
 const subtract = () => {
-    storeVariable();
     operator = '-';
+    storeVariable();
 }
 
 const multiply = () => {
-    storeVariable();
     operator = '*';
+    storeVariable(); 
 }
 
 const divide = () => {
-    storeVariable();
     operator = '/';
+    storeVariable();
 }
 
 // Executes calculations (insert vomit emoji here)
-const operate = function(){
-    storeVariableB();
-    calculate(operator, a, b);  
-};
 
 function calculate(operator, a, b){
 
@@ -59,17 +57,17 @@ function calculate(operator, a, b){
         return result;
 
     } else if (operator === "/"){
+
+        if (b === 0){
+            display.textContent = 'Really?'
+        }
+
         result = a / b;
         stopCrash();
         roundDown();
-        }
-        
-        if (checkCrash === false){
-            display.textContent = 'Really?';
-        } else {
         display.textContent = result;
-        return result;
-    }
+
+        }
 }
 
 // Adds numbers to calculator display 
@@ -77,11 +75,21 @@ const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         console.log(button.id);
-        // stopConcat();
+        
+        if(display.textContent !== null){
+            clearScreen();
+        } 
 
+        if (button.classList.contains("operator-button") && display.textContent){
+            return;
+        } else if (display.textContent == result && (button.classList.contains("operator-button") == false)){
+            allClear();
+        }
+            
         if (button.classList.contains("num-button")){
             display.textContent  += button.id;
-        }
+        } 
+
         // Stops users typing in multiple decimal points
         if((display.textContent).includes('.')){
             removeDotFunctionality();
@@ -112,54 +120,79 @@ divideBtn.addEventListener('click', () => {
     divide();
 })
 
-// Effectively refreshes the calculator
+// Refreshes calculator and clears calc screen
 const allClearBtn = document.getElementById('clear')
 allClearBtn.addEventListener('click', () => {
     allClear();
 });
 
 function allClear(){
-    a = null;
-    b = null;
+    a = 0;
+    b = 0;
     result = null;
+    equalsCheck = null;
+    secondaryOperator = null;
+    storedOperator = null;
     operatorCount = 0;
     display.textContent = '';
-    checkCrash = result;
     operator = null;
-    console.log("All Clear");
+    console.log("AC");
 }
 
+
+// Clears calc display but keep data
 function clearScreen(){
-    console.log("clearScreen");
-    if ( a !== null){
+    if (display.textContent == a){
         display.textContent = '';
+        console.log('CS');
     }
 }
 
-// Stores numbers for calculations
+// Stores numbers and operations for calculations
 function storeVariable(){
+    ++operatorCount;
 
-    if (b === null && a !== null){
+    if (operatorCount === 1){
+        secondaryOperator = operator;
+    } else if (operatorCount === 2){
+        storedOperator = operator;
+        operator = secondaryOperator;
         storeVariableB();
+        calculate(operator, a, b);
+    } else if (operatorCount === 3){
+        operatorCount = 1;
+        storeVariableB();
+        secondaryOperator = operator;
+        operator = storedOperator;
+        calculate(operator, a, b);
     }
 
     a = Number(display.textContent);
-    console.log(a);
-    clearScreen();
     return a;
+    
 }
 
 function storeVariableB(){
-    if (result === null || result === a) {
+    
         b = Number(display.textContent);
-        console.log(`storeVariableB`);
-    }
+        return b;
+
 }
 
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
-    operate(operator, a, b);
+    
+    if (operatorCount === 2){
+        operator = storedOperator;
+    } else if (operatorCount === 3){
+        operator = secondaryOperator;
+    }
+
+    storeVariableB();
+    calculate(operator, a, b);
+
+    operatorCount = 0;
 });
 
 // + / - button functionality
@@ -191,7 +224,7 @@ function stopCrash(){
 function removeDotFunctionality(){
     document.getElementById('.').disabled = true;
 }
-// Can probably get rid of these if you follow up on line eleve
+
 function addFunctionality(){
     document.getElementById('.').disabled = false;
 }
@@ -207,15 +240,6 @@ function delNum(){
 }
 
 function roundDown(){
-    console.log("roundDown");
     result = Math.round(result * 1000)/ 1000;
      return result; 
-}
-
-function flowOperate(){
-    ++operatorCount;
-    console.log(operatorCount);
-    if (operatorCount == 2){
-        calculate();
-    }
 }
