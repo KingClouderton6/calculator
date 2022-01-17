@@ -10,6 +10,7 @@ let operator = null;
 let operatorCount = 0;
 let secondaryOperator = null;
 let storedOperator = null;
+let evaluationCount = null;
 
 //Opt. TODO get rid of  these by looping through buttons and using button.id
 const add = () => {
@@ -36,38 +37,44 @@ const divide = () => {
 
 function calculate(operator, a, b){
 
-    console.log("Zzttt...zzttt...zzttt...machine...running...");
+    
 
     if(operator === "+"){
         result = a + b;
         roundDown();
         display.textContent = result;
+        console.log(`${result}`);
         return result;
 
     } else if (operator === "-"){
         result = a - b;
         roundDown();
         display.textContent = result;
+        console.log(`${result}`);
         return result;
 
     } else if (operator === "*"){
         result = a * b;
         roundDown();
         display.textContent = result;
+        console.log(`${result}`);
         return result;
 
     } else if (operator === "/"){
 
         if (b === 0){
-            display.textContent = 'Really?'
+            display.textContent = 'Really?';
+            return;
         }
 
         result = a / b;
         stopCrash();
         roundDown();
         display.textContent = result;
+        console.log(`${result}`);
 
         }
+        
 }
 
 // Adds numbers to calculator display 
@@ -130,9 +137,9 @@ function allClear(){
     a = 0;
     b = 0;
     result = null;
-    equalsCheck = null;
     secondaryOperator = null;
     storedOperator = null;
+    evaluationCount = null;
     operatorCount = 0;
     display.textContent = '';
     operator = null;
@@ -152,7 +159,9 @@ function clearScreen(){
 function storeVariable(){
     ++operatorCount;
 
-    if (operatorCount === 1){
+    if (operatorCount === 1 && evaluationCount === 0){
+        operatorCount === 0;
+    } else if (operatorCount === 1) {
         secondaryOperator = operator;
     } else if (operatorCount === 2){
         storedOperator = operator;
@@ -160,11 +169,12 @@ function storeVariable(){
         storeVariableB();
         calculate(operator, a, b);
     } else if (operatorCount === 3){
-        operatorCount = 1;
-        storeVariableB();
         secondaryOperator = operator;
         operator = storedOperator;
+        console.log(`operator is ${operator}`);
+        storeVariableB();
         calculate(operator, a, b);
+        operatorCount = 1;
     }
 
     a = Number(display.textContent);
@@ -182,17 +192,28 @@ function storeVariableB(){
 // Equals button functionalities
 const operateBtn = document.getElementById('=');
 operateBtn.addEventListener('click', () => {
-    
+
+    if(operatorCount === 1){
+        operator = secondaryOperator;
+    }
     if (operatorCount === 2){
         operator = storedOperator;
+        console.log(`Operator is now ${operator}`)
     } else if (operatorCount === 3){
         operator = secondaryOperator;
+        console.log(`Operator is now ${operator}`)
     }
 
     storeVariableB();
     calculate(operator, a, b);
 
     operatorCount = 0;
+
+    // result = null;
+    // secondaryOperator = null;
+    // storedOperator = null;
+    // evaluationCount = null;
+    // operatorCount = 0;
 });
 
 // + / - button functionality
